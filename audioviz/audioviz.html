@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Audio Video</title>
+        <meta charset="UTF-8">
+        <style type="text/css">
+            body{
+                padding: 0px; 
+                margin: 0px; 
+                font-family: sans-serif;  
+            }
+            #playAudio{ 
+                position: absolute; 
+                top: 20px; 
+                left: 20px; 
+                background-color: #666;
+                color: #fff;
+                border: none;
+                padding: 5px 10px;
+                cursor: pointer;
+            }
+            p{
+                position: absolute; 
+                top: 10px; 
+                left: 90px;  
+            }
+            #container{
+                width:100%; 
+                height:100%; 
+                position:absolute;
+                z-index: -1;
+            }
+        </style>
+    </head>
+    <body>
+
+
+        <audio id="myAudio" src="mp31.MP3">
+            Sorry you can download de audio here
+        </audio>
+        <button id="playAudio" >Play</button><p>Click the button and move the mouse to rotate camera</p>
+        <div id="container"></div>
+
+        <script src="libs/Three.js"></script>
+        <script src="libs/RequestAnimationFrame.js"></script>
+        <script type="text/javascript">
+
+            var audio = document.getElementById("myAudio");
+            // create the analyser
+            var context = new webkitAudioContext();
+            var analyser = context.createAnalyser();
+
+            var MAX_BAR = 16;
+
+            //set the pay toggle for the audio
+            var audioButton = document.getElementById("playAudio");
+            audioButton.addEventListener('click', audioTogglePlay);
+            function audioTogglePlay(e) {
+                if (audio.paused) {
+                    audio.play();
+                    audioButton.textContent = "Pause";
+                } else {
+                    audio.pause();
+                    audioButton.textContent = "Play";
+                }
+            }
+            
+            // bind the audio data to the web gl cubes
+            function rafCallback(time) {
+                window.requestAnimationFrame(rafCallback);
+
+                var freqByteData = new Uint8Array(analyser.frequencyBinCount);
+                analyser.getByteFrequencyData(freqByteData);
+
+                for (var j = 0; j < MAX_BAR; j++) {
+                    var magnitude = freqByteData[j];
+                    var delta = magnitude / 100;
+                    cubes[j].position.y = cubesPos[j] + delta * 0.25;
+                    cubes[j].scale.y = delta;
+                    // categorize color on amplitude
+                    var color =  0xf5a711;                
+                    if( delta > 0 && delta < 1 ){
+                       color = 0xf5a711;
+                    }else if( delta > 1 && delta < 2 ){
+                        color = 0xf55c11;
+                    }else{
+                        color = 0xcd0505;
+                    }
+                    cubes[j].material.color.setHex( color );
+                }
+            }
+
+            //setup three js
+            var     renderer = null,
+                    scene = null,
+                    camera = null,
+                    cube = null,
+                    cubes = [],
+                    cubesPos = [],
+                    animating = false;
+
+            function startThreeJs()
+            {
+                // Grab our container div
+                var container = document.getElementById("container");
+
+                // Create the Three.js renderer, add it to our div
+                renderer = new THREE.WebGLRenderer({antialias: true});
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                container.appendChild(renderer.domElement);
+
+                // Create a new Three.js scene
+                scene = new THREE.Scene();
+
+                // Put in a camera
+                camera = new THREE.PerspectiveCamera(60, container.offsetWidth / container.offsetHeight, 1, 4000);
+                
+                camera.position.set(1, 0, 3);
+                scene.add(camera);
+                // Create a directional light to show off the object
+                var light = new THREE.DirectionalLight(0xffffff, 1.5);
+                light.position.set(0, 1, 1);
+                scene.add(light);
+
+                // create a point light
+                var pointLight = new THREE.PointLight(0xFFFFFF);
+                pointLight.position.set(0, 1, 1);
+                // add to the scene
+                scene.add(pointLight);
+
+                var material = new THREE.MeshPhongMaterial({
+                    color: 0xf5a711,
+                    shininess: 50
+                });
+
+                // Create the cube geometry
+                for (var i = 0; i < MAX_BAR; i++) {
+                    var geometry = new THREE.CubeGeometry(0.1, 0.5, 0.1);
+                    var c1 = new THREE.Mesh(geometry, material);
+                    //position cubes
+                    c1.rotation.x = Math.PI / 9;
+                    c1.rotation.y = Math.PI / 9;
+                    c1.position.x = -1.8 + (i * 0.25);
+                    c1.position.y = -0.9 + (i * 0.05);
+                    cubesPos.push(c1.position.y);
+                    c1.position.z = 0;
+                    //add cubes to array
+                    cubes.push(c1);
+
+                    // Add the cube to our scene
+                    scene.add(c1);
+                }
+                // Run our render loop
+                run();
+            }
+
+            function run()
+            {
+               camera.position.x =  -0.5 - (mouseX / 150);
+               camera.position.y =  0 - (mouseY / 150);
+               camera.lookAt( scene.position );   
+                // Render the scene
+                renderer.render(scene, camera);
+                // Ask for another frame
+                requestAnimationFrame(run);
+            }
+
+             //initialize
+            function onLoad(e) {
+                startThreeJs();
+                var source = context.createMediaElementSource(audio);
+                source.connect(analyser);
+                analyser.connect(context.destination);
+                rafCallback();
+
+            }
+            window.addEventListener('load', onLoad, false);
+            
+            // add the mouse move listener
+            document.addEventListener( 'mousemove', onMouseMove, false );
+            
+           var halfWidth = window.innerWidth/2, halfHeight = window.innerHeight/2;
+           var mouseX = halfWidth;
+           var mouseY = halfHeight;
+
+            function onMouseMove( event ) {
+              mouseX = event.clientX - halfWidth;
+              mouseY = event.clientY - halfHeight;
+            }
+            
+        </script>  
+    </body>
+</html>
