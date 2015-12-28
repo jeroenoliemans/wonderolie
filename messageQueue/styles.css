@@ -1,0 +1,27 @@
+body {
+    font-family: sans-serif;
+    padding: 15px;
+}
+
+.flash-message{
+    width: 50%;
+    margin: 10px auto;
+    color: #666;
+    border-radius: 5px;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+.error {
+    border-color: red;
+}
+
+.warning {
+    border-color: orange;
+}
+
+.notice {
+    border-color: green;
+}
+

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Message queue</title>
+    <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+    <div id="messageContainer"></div>
+
+<script src="messagequeue-compiled.js"></script>
+<script>
+    var mq = new MessageQueue();
+
+    mq.add('this is a test error');
+    mq.add('this is a test warning', 'warning');
+    window.setTimeout(function() {
+        mq.add('this is a fine notification', 'notification');
+    }, 2000)
+</script>
+</body>
+</html>
