@@ -1,0 +1,150 @@
+/*variables*/
+:root {
+    --main-color: #EFECCA;
+    --accent-color: #A7A37E;
+    --accent-color-middle: #E6E2AF;
+    --title-color: #002F2F;
+    --interactive-color: #046380;
+    --text-color: #696969;
+}
+
+html {
+    font-family: "Arial Narrow", Helvetica, sans-serif;
+    background-color: var(--main-color);
+}
+
+body {
+    color: var(--text-color);
+    margin: 0px;
+}
+
+/*fonts*/
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Lucida Console", "Lucida Sans Typewriter", sans-serif;
+    letter-spacing: 0.0625em;
+    color: var(--title-color);
+}
+
+h1 {
+    font-size: 6vw;
+}
+
+h2 {
+    font-size: 3.0vw;
+}
+
+h3 {
+    font-size: 2.5vw;
+}
+
+h4 {
+    font-size: 2.2vw;
+}
+
+p, a {
+    font-size: 2.8vw;
+}
+
+a {
+    color: var(--interactive-color);
+}
+
+a:link, a:visited {
+    text-decoration: none;
+}
+
+a:hover, a:focus {
+    text-decoration: underline;
+}
+
+/*layout*/
+.container {
+    padding: 3vw;
+}
+
+header {
+    background: #666;
+    background-image: url('img/header.gif');
+    background-position: center top;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 16vw;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+}
+
+aside {
+    background-color: var(--accent-color);
+}
+
+footer {
+    background-color: var(--accent-color-middle);
+}
+
+/*components*/
+.top__stories {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.top__stories--item {
+    flex: 1 1 15rem;
+    margin: 1vw;
+    padding: 1vw;
+    color: var(--main-color);
+    background-color: var(--interactive-color);
+}
+
+.top__stories__image {
+    width: 100%
+}
+
+/*menus*/
+nav {
+    background-color: var(--interactive-color);
+}
+
+.menu__item {
+    color: var(--main-color);
+    font-weight: bold;
+}
+
+.menu{
+    list-style: none;
+    display: flex;
+    padding-left: 0;
+}
+
+.menu > li {
+    margin-right: 1rem;
+}
+
+.menu-side {
+    flex-direction: column;
+}
+
+/*breakpoint*/
+@media (min-width: 60rem) {
+    header {
+        background-size: 100% auto;
+        height: 6.5vw;
+    }
+
+    p, a {
+        font-size: 1.8vw;
+    }
+
+    main {
+        display: flex;
+        flex: 1;
+        flex-direction: row;
+    }
+
+    aside {
+        flex: 1 0 25vw;
+    }
+}
