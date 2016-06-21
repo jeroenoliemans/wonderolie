@@ -1,0 +1,17 @@
+{
+  "name": "CollapsibleTable",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "module for collapsible table",
+  "main": "index.js",
+  "dependencies": {
+    "babel-cli": "^6.3.17"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel collapsibleTable.js --watch --out-file collapsibleTable-compiled.js"
+  },
+  "author": "Jeroen Oliemans",
+  "license": "ISC"
+}
