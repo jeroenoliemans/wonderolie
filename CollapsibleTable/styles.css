@@ -1,0 +1,29 @@
+body {
+    font-family: sans-serif;
+    padding: 15px;
+}
+
+.table {
+    border: 1px solid #0c4d78;
+    border-collapse: collapse;
+}
+
+th {
+    background-color: #0c4d78;
+    color: #f9f9f9;
+    fill: #f9f9f9;
+    font-weight: bold;
+    padding: 1em;
+}
+
+td {
+    border: 1px solid #0c4d78;
+    padding: 1em;
+}
+
+.cell__toggle {
+    background-color: #002F2F;
+    cursor: pointer;
+}
+
+
