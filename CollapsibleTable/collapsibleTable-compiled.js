@@ -61,10 +61,6 @@ class CollapsibleTable {
         });
     }
 
-    //collapseAll() {
-    //
-    //}
-
     // helper function
     retrieveCells(start, end, rowSpans) {
         let cellsList = [];
