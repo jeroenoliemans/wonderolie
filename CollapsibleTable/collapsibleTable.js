@@ -33,31 +33,39 @@ class CollapsibleTable {
         // set click handlers
         toggleArray.forEach( (toggleColumn) => {
             toggleColumn.addEventListener('click', (event) => {
-                //calculate column start and end
                 let toggle = event.currentTarget;
-                let current = this.toggles.indexOf(toggle.cellIndex);
-                let colStart = this.toggles[current];
-                let colEnd = (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1];
+                let section = this.getColstartColEndAndCurrentToggle(toggle.cellIndex);
 
                 if ( toggle.classList.contains(this.indicator)) {
-                    this.hideTableColumns(colStart + 2, colEnd, current);
+                    this.hideTableColumns(section.colStart + 2, section.colEnd, section.current);
                     toggle.classList.remove(this.indicator);
                 } else {
-                    this.showTableColumns(colStart + 2, colEnd, current);
+                    this.showTableColumns(section.colStart + 2, section.colEnd, section.current);
                     toggle.classList.add(this.indicator);
                 }
             });
 
             //collapse all
             if(this.collapsed) {
-                let current = this.toggles.indexOf(toggleColumn.cellIndex);
-                let colStart = this.toggles[current];
-                let colEnd = (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1];
+                let section = this.getColstartColEndAndCurrentToggle(toggleColumn.cellIndex);
 
-                this.hideTableColumns(colStart + 2, colEnd, current);
+                this.hideTableColumns(section.colStart + 2, section.colEnd, section.current);
                 toggleColumn.classList.remove(this.indicator);
             }
         });
+    }
+
+    // calculate the section begin and end
+    getColstartColEndAndCurrentToggle( toggleIndex ) {
+        let current = this.toggles.indexOf(toggleIndex)
+
+        let section = {
+                current: current,
+                colStart: this.toggles[current],
+                colEnd: (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1]
+            };
+
+        return section;
     }
 
     // helper function
