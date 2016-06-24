@@ -32,8 +32,8 @@ class CollapsibleTable {
         this.toggles.push(this.table.rows[0].cells.length);
 
         // set click handlers
-        toggleArray.forEach(toggle => {
-            toggle.addEventListener('click', event => {
+        toggleArray.forEach(toggleColumn => {
+            toggleColumn.addEventListener('click', event => {
                 //calculate column start and end
                 let toggle = event.currentTarget;
                 let current = this.toggles.indexOf(toggle.cellIndex);
@@ -48,8 +48,22 @@ class CollapsibleTable {
                     toggle.classList.add(this.indicator);
                 }
             });
+
+            //collapse all
+            if (this.collapsed) {
+                let current = this.toggles.indexOf(toggleColumn.cellIndex);
+                let colStart = this.toggles[current];
+                let colEnd = current === this.toggles.length ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1];
+
+                this.hideTableColumns(colStart + 2, colEnd, current);
+                toggleColumn.classList.remove(this.indicator);
+            }
         });
     }
+
+    //collapseAll() {
+    //
+    //}
 
     // helper function
     retrieveCells(start, end, rowSpans) {
@@ -76,14 +90,14 @@ class CollapsibleTable {
     //helper function
     showTableColumns(start, end, rowSpans) {
         this.retrieveCells(start, end, rowSpans).forEach(cell => {
-            cell.style.backgroundColor = 'red';
+            cell.style.display = 'table-cell';
         });
     }
 
     // helper function
     hideTableColumns(start, end, rowSpans) {
         this.retrieveCells(start, end, rowSpans).forEach(cell => {
-            cell.style.backgroundColor = 'green';
+            cell.style.display = 'none';
         });
     }
 }
