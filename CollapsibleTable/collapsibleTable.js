@@ -31,23 +31,41 @@ class CollapsibleTable {
         this.toggles.push(this.table.rows[0].cells.length);
 
         // set click handlers
-        toggleArray.forEach( (toggle) => {
-            toggle.addEventListener('click', (event) => {
-                //calculate column start and end
+        toggleArray.forEach( (toggleColumn) => {
+            toggleColumn.addEventListener('click', (event) => {
                 let toggle = event.currentTarget;
-                let current = this.toggles.indexOf(toggle.cellIndex);
-                let colStart = this.toggles[current];
-                let colEnd = (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1];
+                let section = this.getColstartColEndAndCurrentToggle(toggle.cellIndex);
 
                 if ( toggle.classList.contains(this.indicator)) {
-                    this.hideTableColumns(colStart + 2, colEnd, current);
+                    this.hideTableColumns(section.colStart + 2, section.colEnd, section.current);
                     toggle.classList.remove(this.indicator);
                 } else {
-                    this.showTableColumns(colStart + 2, colEnd, current);
+                    this.showTableColumns(section.colStart + 2, section.colEnd, section.current);
                     toggle.classList.add(this.indicator);
                 }
             });
+
+            //collapse all
+            if(this.collapsed) {
+                let section = this.getColstartColEndAndCurrentToggle(toggleColumn.cellIndex);
+
+                this.hideTableColumns(section.colStart + 2, section.colEnd, section.current);
+                toggleColumn.classList.remove(this.indicator);
+            }
         });
+    }
+
+    // calculate the section begin and end
+    getColstartColEndAndCurrentToggle( toggleIndex ) {
+        let current = this.toggles.indexOf(toggleIndex)
+
+        let section = {
+                current: current,
+                colStart: this.toggles[current],
+                colEnd: (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1]
+            };
+
+        return section;
     }
 
     // helper function
@@ -75,14 +93,14 @@ class CollapsibleTable {
     //helper function
     showTableColumns(start, end, rowSpans) {
         this.retrieveCells(start, end, rowSpans).forEach( (cell) => {
-            cell.style.backgroundColor = 'red';
+            cell.style.display = 'table-cell';
         });
     }
 
     // helper function
     hideTableColumns(start, end, rowSpans) {
         this.retrieveCells(start, end, rowSpans).forEach( (cell) => {
-            cell.style.backgroundColor = 'green';
+            cell.style.display = 'none';
         });
     }
 }
