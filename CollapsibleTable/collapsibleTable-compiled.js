@@ -34,12 +34,7 @@ class CollapsibleTable {
         // set click handlers
         toggleArray.forEach(toggleColumn => {
             toggleColumn.addEventListener('click', event => {
-                //calculate column start and end
                 let toggle = event.currentTarget;
-
-                //let current = this.toggles.indexOf(toggle.cellIndex);
-                //let colStart = this.toggles[current];
-                //let colEnd = (current === this.toggles.length) ? this.toggles[this.toggles.length - 1] : this.toggles[current + 1];
                 let section = this.getColstartColEndAndCurrentToggle(toggle.cellIndex);
 
                 if (toggle.classList.contains(this.indicator)) {
@@ -61,6 +56,7 @@ class CollapsibleTable {
         });
     }
 
+    // calculate the section begin and end
     getColstartColEndAndCurrentToggle(toggleIndex) {
         let current = this.toggles.indexOf(toggleIndex);
 
